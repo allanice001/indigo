@@ -88,7 +88,7 @@ class PlaceDetailView(PlaceViewBase, AbstractAuthedIndigoView, TemplateView):
 
         # summarise task counts per work
         work_tasks = {}
-        for work_id, states in task_states.iteritems():
+        for work_id, states in task_states.items():
             work_tasks[work_id] = {'n_%s_tasks' % s: states.get(s, 0) for s in Task.STATES}
             work_tasks[work_id]['n_tasks'] = sum(states.itervalues())
         context['work_tasks_json'] = json.dumps(work_tasks)
@@ -101,7 +101,7 @@ class PlaceDetailView(PlaceViewBase, AbstractAuthedIndigoView, TemplateView):
 
         # summarise task counts per document
         document_tasks = {}
-        for doc_id, states in task_states.iteritems():
+        for doc_id, states in task_states.items():
             document_tasks[doc_id] = {'n_%s_tasks' % s: states.get(s, 0) for s in Task.STATES}
             document_tasks[doc_id]['n_tasks'] = sum(states.itervalues())
         context['document_tasks_json'] = json.dumps(document_tasks)
