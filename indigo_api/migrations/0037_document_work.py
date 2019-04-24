@@ -27,7 +27,7 @@ def create_works(apps, schema_editor):
             commencement_date=d.commencement_date,
             assent_date=d.assent_date,
             deleted=d.deleted,
-        ) for uri, d in work_detail.iteritems()
+        ) for uri, d in work_detail.items()
     ]
     Work.objects.using(db_alias).bulk_create(works)
 

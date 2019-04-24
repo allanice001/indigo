@@ -1,0 +1,124 @@
+{% extends "indigo_api/work_layout.html" %}
+{% load indigo_app humanize %}
+
+{% block main-header-title %}{% endblock %}
+
+{% block work-content %}
+
+  <div class="float-right">
+    {% if perms.indigo_api.change_work or not work and perms.indigo_api.add_work %}
+      <a class="btn btn-success" href="{% url 'create_task' place=place.place_code %}?frbr_uri={{ work.frbr_uri|urlencode }}">Create task</a>
+      <a class="btn btn-primary" href="{% url 'work_edit' frbr_uri=work.frbr_uri %}">Edit work</a>
+    {% endif %}
+  </div>
+
+  <h3>
+    {{ work.title }}
+    {% if work.stub %}<span class="badge badge-info">stub</span>{% endif %}
+  </h3>
+  <h4 class="text-muted">{{ work.frbr_uri }}</h4>
+
+  {% block country %}
+  <div class="mb-3">
+    <div class="float-right">
+      {% if work.updated_by_user %}{% user_profile work.updated_by_user %} u{% else %}U{% endif %}pdated {{ work.updated_at|naturaltime }} 
+      ·
+      <a href="{% url 'work_versions' frbr_uri=work.frbr_uri %}">recent changes</a>
+    </div>
+    <div>
+      {{ country.name }} · {{ country.code }}
+      {% if work.locality %} — {{ work.locality.name }} · {{ work.locality.code }}{% endif %}
+    </div>
+  </div>
+  {% endblock %}
+
+  {% block primary-info %}
+  <div class="card mt-4">
+    <div class="card-body">
+
+      <div class="row">
+        <div class="col-sm-6">
+          <dl>
+            <dt>Promulgation</dt>
+            <dd>
+              <div>
+                Published in {{ work.publication_name|default:"(unknown)" }}
+                {% if work.publication_number %} no. {{ work.publication_number }}{% endif %}
+                {% if work.publication_date %} on {{ work.publication_date|date:"Y-m-d" }}{% endif %}
+              </div>
+              {% if work.publication_document %}
+              <div>
+                <i class="fas fa-file text-muted"></i> <a href="{% url 'work_publication_document' frbr_uri=work.frbr_uri filename=work.publication_document.filename %}" target="_blank" rel="noopener">{{ work.publication_document.filename }}</a> <span class="text-muted">({{ work.publication_document.size|filesizeformat }})</span>
+              </div>
+              {% endif %}
+            </dd>
+
+            <dt>Commencement</dt>
+            <dd>
+              {% if work.commencement_date %}
+                Commences on {{ work.commencement_date|date:"Y-m-d" }}
+              {% else %}
+                <i>(unknown)</i>
+              {% endif %}
+
+              {% if work.commencing_work %}
+              <br>Commenced by <a href="{% url 'work' frbr_uri=work.commencing_work.frbr_uri %}" data-popup-url="{% url 'work_popup' frbr_uri=work.commencing_work.frbr_uri %}">{{ work.commencing_work.title }}</a>
+              {% endif %}
+            </dd>
+          </dl>
+        </div>
+
+        <div class="col-sm-6">
+          <dl>
+            {% if work.parent_work %}
+            <dt>Parent</dt>
+            <dd>
+              <a href="{% url 'work' frbr_uri=work.parent_work.frbr_uri %}" data-popup-url="{% url 'work_popup' frbr_uri=work.parent_work.frbr_uri %}">{{ work.parent_work.title }}</a>
+            </dd>
+            {% endif %}
+
+            <dt>Assent</dt>
+            <dd>
+              {% if work.assent_date %}
+                Assented to on {{ work.assent_date|date:"Y-m-d" }}
+              {% else %}
+                <i>(unknown)</i>
+              {% endif %}
+            </dd>
+
+            <dt>Repeal</dt>
+            <dd>
+              {% if work.repealed_date %}
+                Repealed on {{ work.repealed_date|date:"Y-m-d" }}
+                {% if work.repealed_by %}
+                by <a href="{% url 'work' frbr_uri=work.repealed_by.frbr_uri %}" data-popup-url="{% url 'work_popup' frbr_uri=work.repealed_by.frbr_uri %}">{{ work.repealed_by.title }}</a>
+                {% endif %}
+              {% else %}
+                <i>(not repealed)</i>
+              {% endif %}
+            </dd>
+          </dl>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+
+  {% block points_in_time %}
+  <div class="row mb-3 mt-5">
+    <div class="col text-right">
+      <a href="{% url 'work_amendments' frbr_uri=work.frbr_uri %}" class="btn btn-primary">Manage points in time</a>
+    </div>
+  </div>
+
+  {% if work.stub and work.document_set.undeleted.exists %}
+    <p class="alert alert-warning">
+      <i class="fas fa-exclamation-triangle text-warning"></i> Stub works should not have points in time. Either remove these points in time or don't mark this work as a stub.
+    </p>
+  {% endif %}
+
+  {% include 'indigo_api/_work_points_in_time.html' with work=work editable=False %}
+  {% endblock %}
+
+{% endblock %}

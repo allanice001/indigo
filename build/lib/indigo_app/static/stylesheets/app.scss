@@ -1,0 +1,59 @@
+@import "bootstrap-variables";
+
+@import 'lib/bootstrap-4.1.3/scss/bootstrap';
+
+$body-bg-color: #e4e5e8;
+
+$grey-lightest: $gray-100;
+$grey-lighter: $gray-200;
+$grey: $gray-300;
+$grey-darker: $gray-400;
+$grey-darkest: $gray-500;
+
+$border-colour: $grey;
+$workspace-header-colour: white;
+$workspace-header-border-colour: $grey-darker;
+$header-colour2: $grey-lighter;
+
+$navbar-height: 50px;
+$header-height: 45px;
+$workspace-header-height: 90px;
+
+$document-sidebar-width: 260px;
+$document-sidebar-colour: $grey-lighter;
+
+$selection-colour: #b2d8fc;
+
+// sidebar
+$sidebar-width: 200px;
+
+// fontawesome
+$fa-font-path: "../lib/fontawesome-5.2/webfonts";
+@import "lib/fontawesome-5.2/scss/fontawesome.scss";
+@import "lib/fontawesome-5.2/scss/solid.scss";
+@import "lib/fontawesome-5.2/scss/regular.scss";
+@import "lib/fontawesome-5.2/scss/brands.scss";
+@import "lib/bootstrap-select-1.13.5/css/bootstrap-select.min";
+
+@import 'bower_components/bootstrap-datepicker/css/datepicker3';
+@import 'select2-4.0.0.min';
+@import 'bootstrap-menus.scss';
+
+@import 'core';
+
+@import 'animations';
+@import 'activities';
+@import 'akn';
+@import 'annotations';
+@import 'attachments';
+@import 'documents';
+@import 'forms';
+@import 'importform';
+@import 'library';
+@import 'sidebar';
+@import 'standalone';
+@import 'tasks';
+@import 'timeline';
+@import 'toast';
+@import 'utilities';
+@import 'works';

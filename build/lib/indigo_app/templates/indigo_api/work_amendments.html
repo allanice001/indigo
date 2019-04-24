@@ -1,0 +1,40 @@
+{% extends "indigo_api/work_layout.html" %}
+
+{% block view-id %}work-amendments-view{% endblock %}
+{% block title %}Points in time – {{ block.super }}{% endblock %}
+
+{% block work-content %}
+  <h4>Points in time</h4>
+
+  {% if work.stub %}
+    <p class="alert alert-warning">
+      <i class="fas fa-exclamation-triangle text-warning"></i> Stub works should not have points in time.
+      {% if work.document_set.undeleted.exists %}Either remove these points in time or don't mark this work as a stub.{% endif %}
+    </p>
+  {% endif %}
+
+  {% block amendment_list %}
+    <div class="work-amendments">
+      {% include 'indigo_api/_work_points_in_time.html' with work=work editable=True %}
+    </div>
+  {% endblock %}
+
+  <script id="amendment-editor-template" type="text/x-handlebars-template">
+  {% verbatim %}
+  <div class="form-inline">
+    <input type="text" class="form-control amendment-date mr-2" data-provide="datepicker" placeholder="yyyy-mm-dd" pattern="\d{4}-\d\d-\d\d" required>
+    <button class="btn btn-success save-amendment">OK</button>
+    <button class="btn btn-link cancel">Cancel</button>
+  </div>
+  {% endverbatim %}
+  </script>
+{% endblock %}
+
+
+{% block js %}
+  {{ block.super }}
+
+  <script type="text/javascript">
+  window.Indigo.countries = {{ indigo_countries_json|safe }};
+  </script>
+{% endblock %}

@@ -1,0 +1,13 @@
+<ol>
+  {% for item in items %}
+    {% if item.id %}
+    <li class="toc-{{ item.type }}">
+      <a href="#{{ item.id }}">{{ item.title }}</a>
+
+      {% if item.children %}
+        {% include 'indigo_api/akn/export/toc.html' with items=item.children %}
+      {% endif %}
+    </li>
+    {% endif %}
+  {% endfor %}
+</ol>

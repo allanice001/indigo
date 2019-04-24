@@ -2,7 +2,7 @@ from django.conf.urls import url, include
 from django.conf import settings
 from rest_framework.routers import DefaultRouter
 
-import views
+from . import views
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'countries', views.CountryViewSet, base_name='country')

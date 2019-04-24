@@ -1,7 +1,8 @@
-from itertools import izip
-
 import jsonpatch
-
+try:
+    from itertools import izip
+except ImportError:
+    izip = zip
 
 IGNORE_FIELDS = ('created_at', 'updated_at', 'updated_by_user', 'created_by_user', 'id')
 
